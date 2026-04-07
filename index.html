@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mom 💖</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff6f91, #ffb6c1, #ffc0cb);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* sections */
+section {
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    animation: fade 0.6s ease;
+}
+
+@keyframes fade {
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+/* glow text */
+h1 {
+    font-size: 9vw;
+    text-shadow: 0 0 15px rgba(255,255,255,0.7);
+}
+
+p {
+    font-size: 5vw;
+}
+
+/* button */
+button {
+    font-size: 5vw;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: none;
+    background: #ff69b4;
+    color: white;
+    margin-top: 20px;
+}
+
+/* cards */
+.card {
+    background: rgba(255,255,255,0.25);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+/* gallery */
+.gallery {
+    width: 100%;
+    max-width: 300px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+/* floating hearts */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity:1;}
+    100% { transform: translateY(-110vh); opacity:0;}
+}
+
+/* bike */
+.bike {
+    position: fixed;
+    bottom: 20px;
+    left: -100px;
+    font-size: 40px;
+    animation: ride 8s linear infinite;
+}
+
+@keyframes ride {
+    0% { left: -100px; }
+    100% { left: 110%; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+<source src="music.mp3">
+</audio>
+
+<!-- PAGE 1 -->
+<section>
+<h1>Dear Mom 💖</h1>
+<p>Tap anywhere to start 🎵</p>
+<button onclick="nextSection()">Click here 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- PAGE 2 -->
+<section>
+<h1>🎂 Happy Birthday Mom 🎉</h1>
+<p>You are the most precious gem of my life 💖</p>
+<p>It’s not over yet… 👀</p>
+<button onclick="nextSection()">Next 💖</button>
+</section>
+
+<!-- PAGE 3 -->
+<section>
+<h1>Some things I want to say 💖</h1>
+
+<div class="card">You’ve taken me to so many places, but the best journey is with you 🌍❤️</div>
+<div class="card">Your strictness made me better 🙏💖</div>
+<div class="card">Thank you for all your sacrifices 🥺❤️</div>
+<div class="card">You will always be my home 🏡💞</div>
+
+<h1>Our Memories 📸</h1>
+
+<div class="gallery">
+<img id="slide" src="img1.jpg">
+</div>
+
+<button onclick="nextSection()">Last Page 💖</button>
+</section>
+
+<!-- PAGE 4 -->
+<section>
+<h1>Happy Birthday Mom ❤️</h1>
+<p id="typing"></p>
+</section>
+
+<script>
+window.onload = function(){
+
+    let current = 0;
+    const sections = document.querySelectorAll("section");
+    const music = document.getElementById("bgMusic");
+
+    // show first page
+    sections[0].style.display = "flex";
+
+    // HEARTS (VISIBLE NOW)
+    setInterval(() => {
+        let h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "💖";
+        h.style.left = Math.random()*100 + "vw";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    }, 400);
+
+    // MUSIC + CONFETTI
+    document.addEventListener("click", function(e){
+        music.play();
+
+        confetti({
+            particleCount: 70,
+            spread: 60,
+            origin: {
+                x: e.clientX / window.innerWidth,
+                y: e.clientY / window.innerHeight
+            }
+        });
+    });
+
+    // SLIDESHOW (WORKING)
+    let imgs = ["img1.jpg","img2.jpg","img3.jpg","img4.jpg"];
+    let i = 0;
+    setInterval(()=>{
+        let s = document.getElementById("slide");
+        if(s){
+            i = (i+1)%imgs.length;
+            s.src = imgs[i];
+        }
+    },2000);
+
+    // TYPING EFFECT
+    let text = "Everything I am is because of you 💖\nYou are my strength, my guide, my home.\n\nI love you so much ❤️";
+    let j = 0;
+
+    function type(){
+        if(j < text.length){
+            document.getElementById("typing").innerHTML += text[j] === "\n" ? "<br>" : text[j];
+            j++;
+            setTimeout(type,40);
+        }
+    }
+
+    // NAVIGATION
+    window.nextSection = function(){
+        sections[current].style.display = "none";
+        current++;
+        if(current >= sections.length) current = sections.length - 1;
+        sections[current].style.display = "flex";
+
+        if(current === 3){
+            type();
+            confetti({ particleCount: 150, spread: 100 });
+        }
+    }
+
+};
+</script>
+
+</body>
+                         </html>
+                         
