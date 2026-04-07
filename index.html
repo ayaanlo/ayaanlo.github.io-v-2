@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mom 💖</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background: linear-gradient(135deg,#ff6f91,#ffc0cb);
+  color:white;
+}
+
+/* pages */
+section {
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+}
+
+h1 { font-size:8vw; }
+p { font-size:5vw; }
+
+button {
+  padding:15px 25px;
+  border:none;
+  border-radius:30px;
+  background:#ff69b4;
+  color:white;
+  font-size:5vw;
+}
+
+/* HEARTS */
+.heart {
+  position:fixed;
+  font-size:30px;
+  animation:float 5s linear infinite;
+}
+
+@keyframes float {
+  0% {transform:translateY(0);}
+  100% {transform:translateY(-100vh);}
+}
+
+/* IMAGE GRID (FIXED) */
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  width:90%;
+}
+
+.gallery img {
+  width:100%;
+  height:auto; /* NO CUTTING */
+  border-radius:15px;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
+
+<!-- PAGE 1 -->
+<section id="p1">
+<h1>Dear Mom 💖</h1>
+<p>Tap anywhere</p>
+<button onclick="next()">Start</button>
+</section>
+
+<!-- PAGE 2 -->
+<section id="p2">
+<h1>Happy Birthday 🎉</h1>
+<p>You are the most precious gem of my life 💖</p>
+<button onclick="next()">Next</button>
+</section>
+
+<!-- PAGE 3 -->
+<section id="p3">
+<h1>Memories 📸</h1>
+
+<div class="gallery">
+  <img src="img1.jpg">
+  <img src="img2.jpg">
+  <img src="img3.jpg">
+  <img src="img4.jpg">
+</div>
+
+<button onclick="next()">Next</button>
+</section>
+
+<!-- PAGE 4 -->
+<section id="p4">
+<h1>Love You Mom ❤️</h1>
+<p>Everything I am is because of you 💖</p>
+</section>
+
+<script>
+let page=1;
+document.getElementById("p1").style.display="flex";
+
+// HEARTS
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.innerHTML="💖";
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},500);
+
+// MUSIC + CONFETTI
+document.addEventListener("click",(e)=>{
+  document.getElementById("music").play();
+
+  confetti({
+    particleCount:60,
+    spread:70,
+    origin:{
+      x:e.clientX/window.innerWidth,
+      y:e.clientY/window.innerHeight
+    }
+  });
+});
+
+// NAVIGATION
+function next(){
+  document.getElementById("p"+page).style.display="none";
+  page++;
+  if(page>4) page=4;
+  document.getElementById("p"+page).style.display="flex";
+
+  if(page==2){
+    confetti({particleCount:150,spread:100});
+  }
+}
+</script>
+
+</body>
+</html>
