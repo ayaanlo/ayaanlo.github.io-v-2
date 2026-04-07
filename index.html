@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mom 💖</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    color: white;
+    background: linear-gradient(135deg, #ff6f91, #ffb6c1, #ffc0cb);
+}
+
+/* FIXED sections */
+section {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    padding: 20px;
+
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.6s ease;
+
+    z-index: 1;
+}
+
+/* active page */
+section.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+/* previous page */
+section.previous {
+    transform: translateX(-100%);
+}
+
+/* TEXT FIX */
+h1 {
+    font-size: 9vw;
+    margin: 10px 0;
+}
+
+p {
+    font-size: 5vw;
+    margin: 5px 0;
+}
+
+/* button */
+button {
+    font-size: 5vw;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: none;
+    background: #ff69b4;
+    color: white;
+    margin-top: 20px;
+}
+
+/* cards */
+.card {
+    background: rgba(255,255,255,0.25);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 15px;
+    font-size: 5vw;
+}
+
+/* gallery */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* bike */
+.bike {
+    position: fixed;
+    bottom: 20px;
+    left: -100px;
+    font-size: 40px;
+    animation: ride 8s linear infinite;
+}
+
+@keyframes ride {
+    0% { left: -100px; }
+    100% { left: 110%; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop autoplay muted>
+<source src="music.mp3">
+</audio>
+
+<!-- Page 1 -->
+<section class="active">
+<h1>Dear Mom 💖</h1>
+<p>Tap anywhere to start 🎵</p>
+<button onclick="nextSection()">Click here 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- Page 2 -->
+<section>
+<h1>🎂 Happy Birthday Mom 🎉</h1>
+<p>You are the most precious gem of my life 💖</p>
+<p>It’s not over yet… 👀</p>
+<button onclick="nextSection()">Next 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- Page 3 -->
+<section>
+<h1>Some things I want to say 💖</h1>
+
+<div class="card">You’ve taken me to so many places, but the best journey is with you 🌍❤️</div>
+<div class="card">Your strictness made me better 🙏💖</div>
+<div class="card">Thank you for all your sacrifices 🥺❤️</div>
+<div class="card">You will always be my home 🏡💞</div>
+
+<h1>Our Memories 📸</h1>
+
+<div class="gallery">
+<img src="img1.jpg">
+<img src="img2.jpg">
+<img src="img3.jpg">
+<img src="img4.jpg">
+</div>
+
+<button onclick="nextSection()">Last Page 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- Page 4 -->
+<section>
+<h1>Happy Birthday Mom ❤️</h1>
+<p>
+Everything I am is because of you 💖<br>
+You are my strength, my guide, my home.<br><br>
+I love you so much ❤️
+</p>
+</section>
+
+<script>
+let current = 0;
+const sections = document.querySelectorAll('section');
+const music = document.getElementById('bgMusic');
+
+/* TAP FIX (works on mobile + desktop) */
+function handleTap(e){
+    music.muted = false;
+    music.play();
+
+    let x = 0.5, y = 0.5;
+
+    if(e.touches){
+        x = e.touches[0].clientX / window.innerWidth;
+        y = e.touches[0].clientY / window.innerHeight;
+    } else {
+        x = e.clientX / window.innerWidth;
+        y = e.clientY / window.innerHeight;
+    }
+
+    confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { x, y }
+    });
+}
+
+document.addEventListener("click", handleTap);
+document.addEventListener("touchstart", handleTap);
+
+/* navigation */
+function nextSection(){
+    sections[current].classList.remove('active');
+    sections[current].classList.add('previous');
+
+    current++;
+    if(current >= sections.length) current = sections.length - 1;
+
+    sections[current].classList.add('active');
+
+    if(current === 1){
+        confetti({ particleCount: 120, spread: 80 });
+    }
+}
+</script>
+
+</body>
+</html>
