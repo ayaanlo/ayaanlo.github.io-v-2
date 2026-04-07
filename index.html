@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mom 💖</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    color: white;
+    background: linear-gradient(135deg, #ff6f91, #ffb6c1, #ffc0cb);
+}
+
+/* background pattern */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 25px 25px;
+    z-index: 0;
+}
+
+/* sections */
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+
+    position: absolute;
+    width: 100%;
+
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+    transition: all 0.7s ease;
+}
+
+section.active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    z-index: 2;
+}
+
+section.previous {
+    transform: translateX(-100%) scale(0.95);
+    opacity: 0;
+}
+
+/* text */
+h1 { font-size: 9vw; text-shadow: 0 0 20px rgba(255,105,180,0.8); }
+p { font-size: 5vw; }
+
+/* button */
+button {
+    font-size: 5vw;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: none;
+    background: #ff69b4;
+    color: white;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover { transform: scale(1.08); background: #ff85c1; }
+
+/* cards */
+.card {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    margin: 15px;
+    border-radius: 20px;
+    font-size: 5vw;
+}
+
+/* gallery */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+.gallery img {
+    width: 100%;
+    height: 180px;
+    border-radius: 15px;
+    object-fit: cover;
+    transition: 0.3s;
+}
+.gallery img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+/* bike */
+.bike {
+    position: fixed;
+    bottom: 20px;
+    left: -100px;
+    font-size: 50px;
+    animation: ride 8s linear infinite;
+    filter: drop-shadow(0 0 10px pink);
+}
+
+@keyframes ride {
+    0% { left: -100px; }
+    100% { left: 110%; }
+}
+
+/* floating hearts */
+.hearts span {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 8s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-120vh); }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop autoplay muted>
+<source src="music.mp3">
+</audio>
+
+<div class="hearts">
+<span style="left:10%">💖</span>
+<span style="left:30%">💕</span>
+<span style="left:50%">💗</span>
+<span style="left:70%">💞</span>
+<span style="left:90%">💓</span>
+</div>
+
+<!-- Page 1 -->
+<section class="active">
+<h1>Dear Mom 💖</h1>
+<p>Tap anywhere to start 🎵</p>
+<button onclick="nextSection()">Click here 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- Page 2 -->
+<section>
+<h1>🎂 Happy Birthday Mom 🎉</h1>
+<p>You are the most precious gem of my life 💖</p>
+<p>It’s not over yet… 👀</p>
+<button onclick="nextSection()">Next 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- Page 3 -->
+<section>
+<h1>Some things I want to say 💖</h1>
+
+<div class="card">You’ve taken me to so many places, but the best journey is with you 🌍❤️</div>
+<div class="card">Your strictness made me better 🙏💖</div>
+<div class="card">Thank you for all your sacrifices 🥺❤️</div>
+<div class="card">You will always be my home 🏡💞</div>
+
+<h1>Our Memories 📸</h1>
+
+<div class="gallery">
+<img src="img1.jpg">
+<img src="img2.jpg">
+<img src="img3.jpg">
+<img src="img4.jpg">
+</div>
+
+<button onclick="nextSection()">Last Page 💖</button>
+<div class="bike">🏍️</div>
+</section>
+
+<!-- Page 4 -->
+<section>
+<h1>Happy Birthday Mom ❤️</h1>
+<p>
+Everything I am is because of you 💖<br>
+You are my strength, my guide, my home.<br><br>
+I love you so much ❤️
+</p>
+</section>
+
+<script>
+let current = 0;
+const sections = document.querySelectorAll('section');
+const music = document.getElementById('bgMusic');
+
+/* autoplay trick */
+music.play().catch(()=>{});
+
+function startMusic(e){
+    music.muted = false;
+    music.play();
+
+    // 🎆 spark burst at tap location
+    confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: {
+            x: e.clientX / window.innerWidth,
+            y: e.clientY / window.innerHeight
+        }
+    });
+
+    document.removeEventListener("click", startMusic);
+    document.removeEventListener("touchstart", startMusic);
+}
+
+document.addEventListener("click", startMusic);
+document.addEventListener("touchstart", startMusic);
+
+/* navigation */
+function nextSection(){
+    sections[current].classList.remove('active');
+    sections[current].classList.add('previous');
+
+    current++;
+    if(current >= sections.length) current = sections.length - 1;
+
+    sections[current].classList.add('active');
+
+    if(current === 1){
+        confetti({ particleCount: 120, spread: 80 });
+    }
+}
+</script>
+
+</body>
+</html>
